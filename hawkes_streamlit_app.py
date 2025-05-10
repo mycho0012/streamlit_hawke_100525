@@ -5,11 +5,12 @@ import pyupbit
 import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
-import pandas_ta as ta
+# import pandas_ta as ta  # 제거
 import time
 import os
 import datetime
 from hawkes import hawkes_process, vol_signal
+from custom_indicators import atr  # 직접 구현한 ATR 함수 가져오기
 
 # 페이지 설정
 st.set_page_config(
@@ -110,9 +111,9 @@ def prepare_hawkes_data(data, kappa, lookback):
     data['log_low'] = np.log(data['low'])
     data['log_close'] = np.log(data['close'])
     
-    # ATR 계산 (pandas_ta 사용)
+    # ATR 계산 (직접 구현한 함수 사용)
     norm_lookback = 336  # 14일 (시간 단위)
-    data['atr'] = ta.atr(
+    data['atr'] = atr(
         data['log_high'], 
         data['log_low'], 
         data['log_close'], 
