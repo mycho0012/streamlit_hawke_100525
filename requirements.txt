@@ -8,4 +8,4 @@ pyupbit==0.2.33
 python-dotenv==1.0.0
 ccxt==3.1.52
 setuptools>=65.5.0
-wheel>=0.38.0
+wheel>=0.38.0 
