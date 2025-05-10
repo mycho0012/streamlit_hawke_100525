@@ -150,12 +150,12 @@ def run_backtest(data, commission_rate=0.0005, initial_capital=10000000, trading
     coin_amount = 0
     
     # 수익률 및 포트폴리오 가치 추적
-    data['portfolio_value'] = initial_capital  # 초기값
+    data['portfolio_value'] = float(initial_capital)  # 초기값
     data['returns'] = 0.0
     data['trade'] = 0  # 1: 매수, -1: 매도, 0: 홀드
     data['coin_position'] = 0.0  # 코인 보유량
     data['position_value'] = 0.0  # 포지션 가치
-    data['cash'] = initial_capital  # 현금 보유량
+    data['cash'] = float(initial_capital)  # 현금 보유량
     data['position_status'] = "중립"  # 포지션 상태
     
     # 거래 기록 저장
@@ -181,9 +181,9 @@ def run_backtest(data, commission_rate=0.0005, initial_capital=10000000, trading
             capital -= trading_amount
             coin_amount += coin_to_buy
             data.loc[data.index[i], 'trade'] = 1
-            data.loc[data.index[i], 'coin_position'] = coin_amount
-            data.loc[data.index[i], 'position_value'] = coin_amount * data['close'].iloc[i]
-            data.loc[data.index[i], 'cash'] = capital
+            data.loc[data.index[i], 'coin_position'] = float(coin_amount)
+            data.loc[data.index[i], 'position_value'] = float(coin_amount * data['close'].iloc[i])
+            data.loc[data.index[i], 'cash'] = float(capital)
             data.loc[data.index[i], 'position_status'] = "롱"
             
             # 거래 기록 추가
@@ -215,9 +215,9 @@ def run_backtest(data, commission_rate=0.0005, initial_capital=10000000, trading
             capital += selling_amount - commission
             coin_amount = 0
             data.loc[data.index[i], 'trade'] = -1
-            data.loc[data.index[i], 'coin_position'] = coin_amount
-            data.loc[data.index[i], 'position_value'] = 0
-            data.loc[data.index[i], 'cash'] = capital
+            data.loc[data.index[i], 'coin_position'] = float(coin_amount)
+            data.loc[data.index[i], 'position_value'] = 0.0
+            data.loc[data.index[i], 'cash'] = float(capital)
             data.loc[data.index[i], 'position_status'] = "중립"
             
             # 거래 기록 추가
@@ -235,14 +235,14 @@ def run_backtest(data, commission_rate=0.0005, initial_capital=10000000, trading
         
         # 포지션 유지 중
         else:
-            data.loc[data.index[i], 'coin_position'] = coin_amount
-            data.loc[data.index[i], 'position_value'] = coin_amount * data['close'].iloc[i]
-            data.loc[data.index[i], 'cash'] = capital
+            data.loc[data.index[i], 'coin_position'] = float(coin_amount)
+            data.loc[data.index[i], 'position_value'] = float(coin_amount * data['close'].iloc[i])
+            data.loc[data.index[i], 'cash'] = float(capital)
             data.loc[data.index[i], 'position_status'] = "롱" if coin_amount > 0 else "중립"
         
         # 포트폴리오 가치 갱신
         portfolio_value = capital + (coin_amount * data['close'].iloc[i])
-        data.loc[data.index[i], 'portfolio_value'] = portfolio_value
+        data.loc[data.index[i], 'portfolio_value'] = float(portfolio_value)
         
         # 전략 수익률 계산
         if i > 0 and data['portfolio_value'].iloc[i-1] > 0:
