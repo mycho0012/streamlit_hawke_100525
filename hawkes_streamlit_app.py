@@ -9,8 +9,8 @@ from plotly.subplots import make_subplots
 import time
 import os
 import datetime
-from hawkes import hawkes_process, vol_signal
-from custom_indicators import atr  # 직접 구현한 ATR 함수 가져오기
+from hawkes import hawkes_process, vol_signal, atr  # Include atr function import from hawkes
+# from custom_indicators import atr  # 직접 구현한 ATR 함수 가져오기
 
 # 페이지 설정
 st.set_page_config(
