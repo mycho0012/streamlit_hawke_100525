@@ -1,9 +1,41 @@
 import pandas as pd
 import numpy as np
 # import pandas_ta as ta
-import custom_indicators as ci
+# import custom_indicators as ci
 import matplotlib.pyplot as plt
 import scipy 
+
+def atr(high, low, close, length=14):
+    """
+    Average True Range (ATR) 지표를 계산합니다.
+    
+    Parameters:
+    -----------
+    high : pandas.Series
+        고가 시리즈
+    low : pandas.Series
+        저가 시리즈
+    close : pandas.Series
+        종가 시리즈
+    length : int, default 14
+        기간
+        
+    Returns:
+    --------
+    pandas.Series
+        ATR 값
+    """
+    # True Range 계산
+    tr1 = high - low
+    tr2 = abs(high - close.shift(1))
+    tr3 = abs(low - close.shift(1))
+    
+    tr = pd.DataFrame({'tr1': tr1, 'tr2': tr2, 'tr3': tr3}).max(axis=1)
+    
+    # ATR 계산 (지수 이동평균 사용)
+    atr = tr.ewm(alpha=1/length, min_periods=length).mean()
+    
+    return atr
 
 def plot_two_axes(series1, *ex_series):
     plt.style.use('dark_background')
@@ -110,7 +142,7 @@ data = data.set_index('date')
 
 # Normalize volume
 norm_lookback = 336
-data['atr'] = ci.atr(np.log(data['high']), np.log(data['low']), np.log(data['close']), norm_lookback) 
+data['atr'] = atr(np.log(data['high']), np.log(data['low']), np.log(data['close']), norm_lookback) 
 data['norm_range'] = (np.log(data['high']) - np.log(data['low'])) / data['atr']
 #plot_two_axes(np.log(data['close']), data['norm_range'])
 
