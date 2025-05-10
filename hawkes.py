@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
-import pandas_ta as ta
+# import pandas_ta as ta
+import custom_indicators as ci
 import matplotlib.pyplot as plt
 import scipy 
 
@@ -109,7 +110,7 @@ data = data.set_index('date')
 
 # Normalize volume
 norm_lookback = 336
-data['atr'] = ta.atr(np.log(data['high']), np.log(data['low']), np.log(data['close']), norm_lookback) 
+data['atr'] = ci.atr(np.log(data['high']), np.log(data['low']), np.log(data['close']), norm_lookback) 
 data['norm_range'] = (np.log(data['high']) - np.log(data['low'])) / data['atr']
 #plot_two_axes(np.log(data['close']), data['norm_range'])
 
